@@ -203,13 +203,13 @@ impl Run {
             &self.base.repo_root,
             pkg_dep_graph.package_manager(),
             pkg_dep_graph.lockfile(),
-            root_turbo_json.global_deps,
+            &root_turbo_json.global_deps,
             &env_at_execution_start,
-            root_turbo_json.global_env,
-            root_turbo_json.global_pass_through_env,
+            &root_turbo_json.global_env,
+            &root_turbo_json.global_pass_through_env,
             opts.run_opts.env_mode,
             opts.run_opts.framework_inference,
-            root_turbo_json.global_dot_env,
+            &root_turbo_json.global_dot_env,
         )?;
 
         let global_hash = global_hash_inputs.calculate_global_hash_from_inputs();
@@ -232,10 +232,15 @@ impl Run {
         let visitor = Visitor::new(pkg_dep_graph, &opts);
         visitor.visit(engine).await?;
 
+        let tasks: Vec<_> = engine.tasks().collect();
+        let workspaces = pkg_dep_graph.workspaces().collect();
+        println!("tasks: {:?}", tasks);
+        println!("workspaces: {:?}", workspaces);
+
         let package_file_hashes = PackageFileHashes::calculate_file_hashes(
             scm,
             engine.tasks(),
-            pkg_dep_graph.workspaces().collect(),
+            workspaces,
             engine.task_definitions(),
             &self.base.repo_root,
         )?;
@@ -245,7 +250,7 @@ impl Run {
         Ok(())
     }
 
-    pub fn get_global_hash(&self) -> Result<String> {
+    pub fn get_hashes(&self) -> Result<(String, PackageFileHashes)> {
         let env_at_execution_start = EnvironmentVariableMap::infer();
 
         let package_json_path = self.base.repo_root.join_component("package.json");
@@ -267,20 +272,63 @@ impl Run {
             .workspace_info(&WorkspaceName::Root)
             .expect("must have root workspace");
 
+        let scm = SCM::new(&self.base.repo_root);
+
+        let filtered_pkgs =
+            scope::resolve_packages(&opts.scope_opts, &self.base, &pkg_dep_graph, &scm)?;
+
         let global_hash_inputs = get_global_hash_inputs(
             root_workspace,
             &self.base.repo_root,
             pkg_dep_graph.package_manager(),
             pkg_dep_graph.lockfile(),
-            root_turbo_json.global_deps,
+            &root_turbo_json.global_deps,
             &env_at_execution_start,
-            root_turbo_json.global_env,
-            root_turbo_json.global_pass_through_env,
+            &root_turbo_json.global_env,
+            &root_turbo_json.global_pass_through_env,
             opts.run_opts.env_mode,
             opts.run_opts.framework_inference,
-            root_turbo_json.global_dot_env,
+            &root_turbo_json.global_dot_env,
         )?;
 
-        Ok(global_hash_inputs.calculate_global_hash_from_inputs())
+        let global_hash = global_hash_inputs.calculate_global_hash_from_inputs();
+
+        let engine = EngineBuilder::new(
+            &self.base.repo_root,
+            &pkg_dep_graph,
+            opts.run_opts.single_package,
+        )
+        .with_root_tasks(root_turbo_json.pipeline.keys().cloned())
+        .with_turbo_jsons(Some(
+            Some((WorkspaceName::Root, root_turbo_json.clone()))
+                .into_iter()
+                .collect(),
+        ))
+        .with_tasks_only(opts.run_opts.only)
+        .with_workspaces(
+            filtered_pkgs
+                .iter()
+                .map(|workspace| WorkspaceName::from(workspace.as_str()))
+                .collect(),
+        )
+        .with_tasks(
+            opts.run_opts
+                .tasks
+                .iter()
+                .map(|task| TaskName::from(task.as_str()).into_owned()),
+        )
+        .build()?;
+
+        let package_file_hashes = PackageFileHashes::calculate_file_hashes(
+            scm,
+            engine.tasks(),
+            pkg_dep_graph.workspaces().collect(),
+            engine.task_definitions(),
+            &self.base.repo_root,
+        )?;
+
+        println!("{:?}", package_file_hashes);
+
+        Ok((global_hash, package_file_hashes))
     }
 }
