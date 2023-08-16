@@ -32,7 +32,7 @@ use crate::{
     package_json::PackageJson,
     run::global_hash::get_global_hash_inputs,
     task_graph::Visitor,
-    task_hash::PackageFileHashes,
+    task_hash::PackageInputsHashes,
 };
 
 #[derive(Debug)]
@@ -234,10 +234,8 @@ impl Run {
 
         let tasks: Vec<_> = engine.tasks().collect();
         let workspaces = pkg_dep_graph.workspaces().collect();
-        println!("tasks: {:?}", tasks);
-        println!("workspaces: {:?}", workspaces);
 
-        let package_file_hashes = PackageFileHashes::calculate_file_hashes(
+        let package_file_hashes = PackageInputsHashes::calculate_file_hashes(
             scm,
             engine.tasks(),
             workspaces,
@@ -250,7 +248,7 @@ impl Run {
         Ok(())
     }
 
-    pub fn get_hashes(&self) -> Result<(String, PackageFileHashes)> {
+    pub fn get_hashes(&self) -> Result<(String, PackageInputsHashes)> {
         let env_at_execution_start = EnvironmentVariableMap::infer();
 
         let package_json_path = self.base.repo_root.join_component("package.json");
@@ -319,15 +317,13 @@ impl Run {
         )
         .build()?;
 
-        let package_file_hashes = PackageFileHashes::calculate_file_hashes(
+        let package_file_hashes = PackageInputsHashes::calculate_file_hashes(
             scm,
             engine.tasks(),
             pkg_dep_graph.workspaces().collect(),
             engine.task_definitions(),
             &self.base.repo_root,
         )?;
-
-        println!("{:?}", package_file_hashes);
 
         Ok((global_hash, package_file_hashes))
     }
