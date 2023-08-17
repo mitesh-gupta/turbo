@@ -8,11 +8,7 @@ use swc_core::{
     common::{
         errors::Handler, source_map::SourceMapGenConfig, BytePos, FileName, LineCol, SourceMap,
     },
-    css::{
-        ast::Stylesheet,
-        modules::{CssClassName, TransformConfig},
-        parser::{parse_file, parser::ParserConfig},
-    },
+    css::ast::Stylesheet,
     ecma::atoms::JsWord,
 };
 use turbo_tasks::{ValueToString, Vc};
