@@ -275,6 +275,10 @@ impl Run {
         let filtered_pkgs =
             scope::resolve_packages(&opts.scope_opts, &self.base, &pkg_dep_graph, &scm)?;
 
+        let root_workspace = pkg_dep_graph
+            .workspace_info(&WorkspaceName::Root)
+            .expect("must have root workspace");
+
         let global_hash_inputs = get_global_hash_inputs(
             root_workspace,
             &self.base.repo_root,
