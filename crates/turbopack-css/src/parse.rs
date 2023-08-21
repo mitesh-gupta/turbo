@@ -2,13 +2,13 @@ use std::sync::Arc;
 
 use anyhow::{Context, Result};
 use indexmap::IndexMap;
+use lightningcss::stylesheet::StyleSheet;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use swc_core::{
     common::{
         errors::Handler, source_map::SourceMapGenConfig, BytePos, FileName, LineCol, SourceMap,
     },
-    css::ast::Stylesheet,
     ecma::atoms::JsWord,
 };
 use turbo_tasks::{ValueToString, Vc};
@@ -33,7 +33,7 @@ static BASENAME_RE: Lazy<Regex> = Lazy::new(|| Regex::new(r"^[^.]*").unwrap());
 pub enum ParseCssResult {
     Ok {
         #[turbo_tasks(trace_ignore)]
-        stylesheet: Stylesheet,
+        stylesheet: StyleSheet<'static, 'static>,
         #[turbo_tasks(debug_ignore, trace_ignore)]
         source_map: Arc<SourceMap>,
         #[turbo_tasks(debug_ignore, trace_ignore)]
