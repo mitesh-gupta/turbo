@@ -1,4 +1,5 @@
 use anyhow::Result;
+use lightningcss::rules::CssRule;
 use swc_core::common::{Globals, GLOBALS};
 use turbo_tasks::{TryJoinIterExt, Value, ValueToString, Vc};
 use turbo_tasks_fs::FileSystemPath;
@@ -263,15 +264,9 @@ impl CssChunkItem for CssModuleChunkItem {
             });
 
             // remove imports
-            stylesheet.rules.retain(|r| {
-                !matches!(
-                    r,
-                    &Rule::AtRule(box AtRule {
-                        prelude: Some(box AtRulePrelude::ImportPrelude(_)),
-                        ..
-                    })
-                )
-            });
+            stylesheet
+                .rules
+                .retain(|r| !matches!(r, &CssRule::Import(..)));
 
             let mut code_string = String::new();
             let mut srcmap = vec![];
