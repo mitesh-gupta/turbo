@@ -1,5 +1,5 @@
 use anyhow::Result;
-use lightningcss::rules::CssRule;
+use lightningcss::{printer::Printer, rules::CssRule, stylesheet::PrinterOptions};
 use swc_core::common::{Globals, GLOBALS};
 use turbo_tasks::{TryJoinIterExt, Value, ValueToString, Vc};
 use turbo_tasks_fs::FileSystemPath;
@@ -268,20 +268,16 @@ impl CssChunkItem for CssModuleChunkItem {
                 .rules
                 .retain(|r| !matches!(r, &CssRule::Import(..)));
 
-            let mut code_string = String::new();
-            let mut srcmap = vec![];
-
-            let mut code_gen = CodeGenerator::new(
-                BasicCssWriter::new(&mut code_string, Some(&mut srcmap), Default::default()),
-                Default::default(),
-            );
-
-            code_gen.emit(&stylesheet)?;
+            let mut srcmap = Default::default();
+            let result = stylesheet.to_css(PrinterOptions {
+                source_map: Some(&mut srcmap),
+                ..Default::default()
+            })?;
 
             let srcmap = ParseCssResultSourceMap::new(source_map.clone(), srcmap).cell();
 
             Ok(CssChunkItemContent {
-                inner_code: code_string.into(),
+                inner_code: result.code.into(),
                 imports,
                 source_map: Some(srcmap),
             }
