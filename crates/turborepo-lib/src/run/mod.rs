@@ -229,8 +229,8 @@ impl Run {
 
         let pkg_dep_graph = Arc::new(pkg_dep_graph);
         let engine = Arc::new(engine);
-        let visitor = Visitor::new(pkg_dep_graph, &opts);
-        visitor.visit(engine).await?;
+        let visitor = Visitor::new(pkg_dep_graph.clone(), &opts);
+        visitor.visit(engine.clone()).await?;
 
         let tasks: Vec<_> = engine.tasks().collect();
         let workspaces = pkg_dep_graph.workspaces().collect();
@@ -273,7 +273,7 @@ impl Run {
         let scm = SCM::new(&self.base.repo_root);
 
         let filtered_pkgs =
-            scope::resolve_packages(&opts.scope_opts, &self.base, &pkg_dep_graph, &scm)?;
+            scope::resolve_packages(&opts.scope_opts, &self.base.repo_root, &pkg_dep_graph, &scm)?;
 
         let root_workspace = pkg_dep_graph
             .workspace_info(&WorkspaceName::Root)
@@ -307,12 +307,7 @@ impl Run {
                 .collect(),
         ))
         .with_tasks_only(opts.run_opts.only)
-        .with_workspaces(
-            filtered_pkgs
-                .iter()
-                .map(|workspace| WorkspaceName::from(workspace.as_str()))
-                .collect(),
-        )
+        .with_workspaces(filtered_pkgs.into_iter().collect())
         .with_tasks(
             opts.run_opts
                 .tasks
