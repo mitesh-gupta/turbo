@@ -17,7 +17,7 @@ use turbopack_core::{
     module::Module,
     reference::{ModuleReference, ModuleReferences},
     reference_type::{CssReferenceSubType, ReferenceType},
-    resolve::{origin::ResolveOrigin, parse::Request},
+    resolve::origin::ResolveOrigin,
     source::Source,
 };
 use turbopack_ecmascript::{
@@ -29,10 +29,7 @@ use turbopack_ecmascript::{
     ParseResultSourceMap,
 };
 
-use crate::{
-    parse::{ParseCss, ParseCssResult},
-    references::{compose::CssModuleComposeReference, internal::InternalCssAssetReference},
-};
+use crate::references::{compose::CssModuleComposeReference, internal::InternalCssAssetReference};
 
 #[turbo_tasks::function]
 fn modifier() -> Vc<String> {
