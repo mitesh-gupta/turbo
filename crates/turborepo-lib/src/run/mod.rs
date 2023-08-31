@@ -259,6 +259,19 @@ impl Run {
 
         visitor.visit(engine.clone()).await?;
 
+        let tasks: Vec<_> = engine.tasks().collect();
+        let workspaces = pkg_dep_graph.workspaces().collect();
+
+        let package_file_hashes = PackageInputsHashes::calculate_file_hashes(
+            scm,
+            engine.tasks(),
+            workspaces,
+            engine.task_definitions(),
+            &self.base.repo_root,
+        )?;
+
+        debug!("package file hashes: {:?}", package_file_hashes);
+
         Ok(())
     }
 
@@ -280,11 +293,6 @@ impl Run {
         let root_turbo_json =
             TurboJson::load(&self.base.repo_root, &root_package_json, is_single_package)?;
 
-        let scm = SCM::new(&self.base.repo_root);
-
-        let filtered_pkgs =
-            scope::resolve_packages(&opts.scope_opts, &self.base.repo_root, &pkg_dep_graph, &scm)?;
-
         let root_workspace = pkg_dep_graph
             .workspace_info(&WorkspaceName::Root)
             .expect("must have root workspace");
@@ -302,6 +310,11 @@ impl Run {
             opts.run_opts.framework_inference,
             &root_turbo_json.global_dot_env,
         )?;
+
+        let scm = SCM::new(&self.base.repo_root);
+
+        let filtered_pkgs =
+            scope::resolve_packages(&opts.scope_opts, &self.base.repo_root, &pkg_dep_graph, &scm)?;
 
         let global_hash = global_hash_inputs.calculate_global_hash_from_inputs();
 
