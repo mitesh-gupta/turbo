@@ -72,7 +72,7 @@ pub struct RunOpts<'a> {
     pub(crate) single_package: bool,
     pub log_prefix: LogPrefix,
     pub log_order: LogOrder,
-    summarize: Option<Option<bool>>,
+    pub summarize: Option<Option<bool>>,
     pub(crate) experimental_space_id: Option<String>,
     pub is_github_actions: bool,
 }
