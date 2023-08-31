@@ -304,6 +304,9 @@ impl<'a> TaskHasher<'a> {
             env_mode: task_env_mode,
             dot_env: &task_definition.dot_env,
         };
+
+        println!("task hashable: {:#?}", task_hashable);
+
         let task_hash = task_hashable.hash();
 
         let mut task_hash_tracker = self.task_hash_tracker.lock().await;

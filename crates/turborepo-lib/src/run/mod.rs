@@ -354,7 +354,6 @@ impl Run {
         );
 
         visitor.visit(engine.clone()).await?;
-
         let task_hash_tracker = visitor.into_task_hash_tracker();
 
         Ok((global_hash, task_hash_tracker))
