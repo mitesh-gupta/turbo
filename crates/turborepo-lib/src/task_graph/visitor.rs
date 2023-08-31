@@ -3,6 +3,7 @@ use std::sync::{Arc, OnceLock};
 use futures::{stream::FuturesUnordered, StreamExt};
 use regex::Regex;
 use tokio::sync::mpsc;
+use tracing::debug;
 use turborepo_env::{EnvironmentVariableMap, ResolvedEnvMode};
 
 use crate::{
@@ -136,7 +137,7 @@ impl<'a> Visitor<'a> {
                 )
                 .await?;
 
-            println!("task {} hash is {}", info, task_hash);
+            debug!("task {} hash is {}", info, task_hash);
 
             tasks.push(tokio::spawn(async move {
                 println!(

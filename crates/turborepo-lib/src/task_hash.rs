@@ -152,11 +152,14 @@ impl PackageInputsHashes {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Debug, Serialize)]
 pub struct TaskHashTracker {
+    #[serde(skip)]
     package_task_env_vars: HashMap<TaskId<'static>, DetailedMap>,
     package_task_hashes: HashMap<TaskId<'static>, String>,
+    #[serde(skip)]
     package_task_framework: HashMap<TaskId<'static>, String>,
+    #[serde(skip)]
     package_task_outputs: HashMap<TaskId<'static>, Vec<AnchoredSystemPathBuf>>,
 }
 

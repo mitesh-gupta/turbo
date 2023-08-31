@@ -8,10 +8,16 @@ pub const TASK_DELIMITER: &str = "#";
 pub const ROOT_PKG_NAME: &str = "//";
 
 /// A task identifier as it will appear in the task graph
-#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord, Serialize)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct TaskId<'a> {
     pub(crate) package: Cow<'a, str>,
     pub(crate) task: Cow<'a, str>,
+}
+
+impl<'a> Serialize for TaskId<'a> {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        serializer.serialize_str(&self.to_string())
+    }
 }
 
 /// A task name as it appears in in a `turbo.json` it might be for all
