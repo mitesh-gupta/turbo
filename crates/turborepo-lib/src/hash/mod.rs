@@ -200,11 +200,11 @@ impl From<TaskHashable<'_>> for Builder<HeapAllocator> {
             ::capnp::message::TypedBuilder::<proto_capnp::task_hashable::Owned>::new_default();
         let mut builder = message.init_root();
 
-        builder.set_global_hash(&task_hashable.global_hash);
+        builder.set_global_hash(task_hashable.global_hash);
         builder.set_package_dir(&task_hashable.package_dir.to_string());
-        builder.set_hash_of_files(&task_hashable.hash_of_files);
+        builder.set_hash_of_files(task_hashable.hash_of_files);
         builder.set_external_deps_hash(&task_hashable.external_deps_hash);
-        builder.set_task(&task_hashable.task);
+        builder.set_task(task_hashable.task);
         builder.set_env_mode(task_hashable.env_mode.into());
 
         {
@@ -290,7 +290,7 @@ impl<'a> From<GlobalHashable<'a>> for Builder<HeapAllocator> {
 
         let mut builder = message.init_root();
 
-        builder.set_global_cache_key(&hashable.global_cache_key);
+        builder.set_global_cache_key(hashable.global_cache_key);
 
         {
             let mut entries = builder

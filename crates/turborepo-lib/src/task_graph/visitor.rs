@@ -130,7 +130,7 @@ impl<'a> Visitor<'a> {
                 .task_hasher
                 .calculate_task_hash(
                     &info,
-                    &task_definition,
+                    task_definition,
                     task_env_mode,
                     workspace_info,
                     dependency_set,

@@ -29,7 +29,7 @@ pub enum Error {
     #[error("missing hash for dependent task {0}")]
     MissingDependencyTaskHash(String),
     #[error(transparent)]
-    SCM(#[from] turborepo_scm::Error),
+    Scm(#[from] turborepo_scm::Error),
     #[error(transparent)]
     Env(#[from] turborepo_env::Error),
     #[error(transparent)]
@@ -82,7 +82,7 @@ impl PackageInputsHashes {
             }
 
             let task_definition = task_definitions
-                .get(&task_id)
+                .get(task_id)
                 .ok_or_else(|| Error::MissingPipelineEntry(task_id.clone()))?;
 
             // TODO: Look into making WorkspaceName take a Cow
@@ -113,7 +113,7 @@ impl PackageInputsHashes {
                 .unwrap_or_else(|| AnchoredSystemPath::new("").unwrap());
 
             let mut hash_object = scm.get_package_file_hashes(
-                &repo_root,
+                repo_root,
                 package_path,
                 &package_file_hash_inputs.task_definition.inputs,
             )?;
@@ -146,7 +146,7 @@ impl PackageInputsHashes {
         }
 
         Ok(PackageInputsHashes {
-            hashes: hashes,
+            hashes,
             expanded_hashes: hash_objects,
         })
     }
@@ -266,7 +266,7 @@ impl<'a> TaskHasher<'a> {
                 .env_at_execution_start
                 .from_wildcards(&task_definition.env)?;
 
-            explicit_env_var_map.union(&mut all_env_var_map);
+            explicit_env_var_map.union(&all_env_var_map);
         }
 
         let env_vars = DetailedMap {
@@ -278,7 +278,7 @@ impl<'a> TaskHasher<'a> {
         };
 
         let hashable_env_pairs = env_vars.all.to_hashable();
-        let outputs = task_definition.hashable_outputs(&task_id);
+        let outputs = task_definition.hashable_outputs(task_id);
         let task_dependency_hashes = self.calculate_dependency_hashes(dependency_set).await?;
 
         debug!(
@@ -338,7 +338,7 @@ impl<'a> TaskHasher<'a> {
             let task_hash_tracker = self.task_hash_tracker.lock().await;
             let dependency_hash = task_hash_tracker
                 .package_task_hashes
-                .get(&dependency_task_id)
+                .get(dependency_task_id)
                 .ok_or_else(|| Error::MissingDependencyTaskHash(dependency_task.to_string()))?;
             dependency_hash_set.insert(dependency_hash.clone());
         }
