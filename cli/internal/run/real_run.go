@@ -4,7 +4,6 @@ import (
 	"bytes"
 	gocontext "context"
 	"fmt"
-	"github.com/vercel/turbo/cli/internal/turbostate"
 	"io"
 	"log"
 	"os"
@@ -33,6 +32,7 @@ import (
 	"github.com/vercel/turbo/cli/internal/spinner"
 	"github.com/vercel/turbo/cli/internal/taskhash"
 	"github.com/vercel/turbo/cli/internal/turbopath"
+	"github.com/vercel/turbo/cli/internal/turbostate"
 	"github.com/vercel/turbo/cli/internal/ui"
 	"github.com/vercel/turbo/cli/internal/util"
 )
