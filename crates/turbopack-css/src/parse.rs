@@ -171,7 +171,7 @@ async fn parse_content(
         css_modules: match ty {
             CssModuleAssetType::Module => Some(lightningcss::css_modules::Config {
                 pattern: Pattern {
-                    segments: vec![
+                    segments: smallvec![
                         Segment::Local,
                         Segment::Literal("__"),
                         Segment::Name,
