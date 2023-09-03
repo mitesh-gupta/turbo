@@ -64,7 +64,7 @@ pub struct ParseCssResultSourceMap {
     /// The position mappings that can generate a real source map given a (SWC)
     /// SourceMap.
     #[turbo_tasks(debug_ignore, trace_ignore)]
-    mappings: Vec<(BytePos, LineCol)>,
+    mappings: parcel_sourcemap::SourceMap,
 }
 
 impl PartialEq for ParseCssResultSourceMap {
@@ -74,7 +74,7 @@ impl PartialEq for ParseCssResultSourceMap {
 }
 
 impl ParseCssResultSourceMap {
-    pub fn new(source_map: Arc<SourceMap>, mappings: Vec<(BytePos, LineCol)>) -> Self {
+    pub fn new(source_map: Arc<SourceMap>, mappings: parcel_sourcemap::SourceMap) -> Self {
         ParseCssResultSourceMap {
             source_map,
             mappings,
