@@ -3915,7 +3915,8 @@ dependencies = [
 [[package]]
 name = "lightningcss"
 version = "1.0.0-alpha.45"
-source = "git+https://github.com/kdy1/lightningcss.git?branch=visitor-not-sized#0dbb8629f5573353246b51a600636b3140effb1b"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "04f87dd0377974affb751fedb4d394b0fce51829227ec6afe4fa7d51eeb6383b"
 dependencies = [
  "ahash 0.7.6",
  "bitflags 2.3.3",
@@ -3938,7 +3939,8 @@ dependencies = [
 [[package]]
 name = "lightningcss-derive"
 version = "1.0.0-alpha.39"
-source = "git+https://github.com/kdy1/lightningcss.git?branch=visitor-not-sized#0dbb8629f5573353246b51a600636b3140effb1b"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "80f9c05013e43faeef3f09a4c425f926b91a64fee540887a9857a5556b70ea5a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -4908,7 +4910,8 @@ dependencies = [
 [[package]]
 name = "parcel_selectors"
 version = "0.26.1"
-source = "git+https://github.com/kdy1/lightningcss.git?branch=visitor-not-sized#0dbb8629f5573353246b51a600636b3140effb1b"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b1aa68e6c4bf7a49302b9c711c880c1cc2a7dc5c5184042cc724e4124e0d95f"
 dependencies = [
  "bitflags 2.3.3",
  "cssparser",
