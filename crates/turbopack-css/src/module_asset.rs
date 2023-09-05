@@ -16,7 +16,7 @@ use turbopack_core::{
     ident::AssetIdent,
     issue::{Issue, IssueExt, IssueSeverity},
     module::Module,
-    reference::ModuleReferences,
+    reference::{ModuleReference, ModuleReferences},
     reference_type::{CssReferenceSubType, ReferenceType},
     resolve::{origin::ResolveOrigin, parse::Request},
     source::Source,
@@ -131,7 +131,7 @@ enum ModuleCssClass {
 /// 1. class1: [Global("exported_class1")]
 /// 2. class2: [Local("exported_class2")]
 /// 3. class3: [Local("exported_class3), Import("class4", "./other.module.css")]
-#[turbo_tasks::value(transparent, serialization = "none")]
+#[turbo_tasks::value(transparent)]
 #[derive(Debug, Clone)]
 struct ModuleCssClasses(IndexMap<String, ModuleCssClass>);
 
