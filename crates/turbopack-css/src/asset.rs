@@ -17,11 +17,10 @@ use turbopack_core::{
 use crate::{
     chunk::{CssChunk, CssChunkItem, CssChunkItemContent, CssChunkPlaceable, CssImport},
     code_gen::CodeGenerateable,
-    process::{process_css, ProcessCss, ProcessCssResult, ProcessCssResultSourceMap},
+    process::{process_css, ProcessCss, ProcessCssResult},
     references::{
         analyze_css_stylesheet, compose::CssModuleComposeReference, import::ImportAssetReference,
     },
-    transform::CssInputTransforms,
     CssModuleAssetType,
 };
 
