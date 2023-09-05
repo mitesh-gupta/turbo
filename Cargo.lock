@@ -9562,6 +9562,7 @@ dependencies = [
  "swc_ecma_ast",
  "swc_ecma_codegen 0.145.0",
  "swc_ecma_parser 0.140.0",
+ "swc_ecma_preset_env 0.201.0",
  "swc_ecma_transforms_base 0.133.0",
  "swc_ecma_utils 0.123.0",
  "swc_ecma_visit",
