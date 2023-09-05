@@ -2,9 +2,15 @@ use std::{fmt::Debug, hash::Hash, sync::Arc};
 
 use anyhow::Result;
 use async_trait::async_trait;
-use swc_common::{chain, comments::Comments};
-use swc_ecma_ast::{Module, ModuleItem, Program};
-use swc_ecma_transforms_base::{assumptions::Assumptions, helpers::inject_helpers};
+use swc_common::{chain, comments::Comments, Mark, SourceMap};
+use swc_core::quote;
+use swc_ecma_ast::{Module, ModuleItem, Program, Script};
+use swc_ecma_preset_env::Targets;
+use swc_ecma_transforms_base::{
+    assumptions::Assumptions, feature::FeatureFlag, helpers::inject_helpers,
+};
+use swc_ecma_transforms_react::react;
+use swc_node_comments::SwcComments;
 use turbo_tasks::{ValueDefault, Vc};
 use turbo_tasks_fs::FileSystemPath;
 use turbopack_core::{
@@ -150,7 +156,7 @@ impl EcmascriptInputTransform {
                     development: Some(*development),
                     import_source: import_source.await?.clone_value(),
                     refresh: if *refresh {
-                        Some(swc_ecma_transforms::react::RefreshOptions {
+                        Some(swc_ecma_transforms_react::RefreshOptions {
                             refresh_reg: "__turbopack_refresh__.register".to_string(),
                             refresh_sig: "__turbopack_refresh__.signature".to_string(),
                             ..Default::default()
@@ -175,16 +181,16 @@ impl EcmascriptInputTransform {
                 // Explicit type annotation to ensure that we don't duplicate transforms in the
                 // final binary
                 program.visit_mut_with(
-                    &mut swc_ecma_transforms::module::common_js::<&dyn Comments>(
+                    &mut swc_ecma_transforms_module::common_js::<&dyn Comments>(
                         unresolved_mark,
-                        swc_ecma_transforms::module::util::Config {
+                        swc_ecma_transforms_module::util::Config {
                             allow_top_level_this: true,
                             import_interop: Some(
-                                swc_ecma_transforms::module::util::ImportInterop::Swc,
+                                swc_ecma_transforms_module::util::ImportInterop::Swc,
                             ),
                             ..Default::default()
                         },
-                        swc_ecma_transforms::base::feature::FeatureFlag::all(),
+                        swc_ecma_transforms_base::feature::FeatureFlag::all(),
                         Some(&comments),
                     ),
                 );
@@ -231,7 +237,7 @@ impl EcmascriptInputTransform {
                 // TODO(WEB-1213)
                 use_define_for_class_fields: _use_define_for_class_fields,
             } => {
-                use swc_ecma_transforms::typescript::strip_with_config;
+                use swc_ecma_transforms_typescript::strip_with_config;
                 let config = Default::default();
                 program.visit_mut_with(&mut strip_with_config(config, top_level_mark));
             }
@@ -242,7 +248,7 @@ impl EcmascriptInputTransform {
                 // TODO(WEB-1213)
                 use_define_for_class_fields: _use_define_for_class_fields,
             } => {
-                use swc_ecma_transforms::proposal::decorators::{decorators, Config};
+                use swc_ecma_transforms_proposal::decorators::{decorators, Config};
                 let config = Config {
                     legacy: *is_legacy,
                     emit_metadata: *emit_decorators_metadata,

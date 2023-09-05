@@ -29,8 +29,17 @@ use indexmap::IndexSet;
 use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use regex::Regex;
-use swc_common::errors::Handler;
+use swc_common::{
+    comments::CommentKind,
+    errors::{DiagnosticId, Handler, HANDLER},
+    pass::AstNodePath,
+    Globals, Span, GLOBALS,
+};
 use swc_ecma_ast::*;
+use swc_ecma_visit::{
+    fields::{AssignExprField, ExprField, PatField, PatOrExprField},
+    AstParentKind, AstParentNodeRef, VisitAstPath,
+};
 use turbo_tasks::{TryJoinIterExt, Upcast, Value, Vc};
 use turbo_tasks_fs::{FileJsonContent, FileSystemPath};
 use turbopack_core::{
