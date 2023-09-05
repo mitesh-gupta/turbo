@@ -1,10 +1,11 @@
 use anyhow::Result;
 use swc_common::{
     errors::{Handler, HANDLER},
+    source_map::Pos,
     Globals, GLOBALS,
 };
 use swc_css_ast::{ImportHref, ImportPrelude, Url, UrlValue};
-use swc_css_visit::{AstNodePath, AstParentKind, VisitAstPath};
+use swc_css_visit::{AstNodePath, AstParentKind, VisitAstPath, VisitWithPath};
 use turbo_tasks::{Value, Vc};
 use turbopack_core::{
     issue::{IssueSeverity, IssueSource, OptionIssueSource},
