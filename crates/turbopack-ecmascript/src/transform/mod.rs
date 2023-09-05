@@ -2,7 +2,7 @@ use std::{fmt::Debug, hash::Hash, sync::Arc};
 
 use anyhow::Result;
 use async_trait::async_trait;
-use swc_common::{chain, comments::Comments, Mark, SourceMap};
+use swc_common::{chain, comments::Comments, util::take::Take, Mark, SourceMap};
 use swc_core::quote;
 use swc_ecma_ast::{Module, ModuleItem, Program, Script};
 use swc_ecma_preset_env::Targets;
@@ -10,7 +10,7 @@ use swc_ecma_transforms_base::{
     assumptions::Assumptions, feature::FeatureFlag, helpers::inject_helpers,
 };
 use swc_ecma_transforms_react::react;
-use swc_ecma_visit::VisitMutWith;
+use swc_ecma_visit::{FoldWith, VisitMutWith};
 use swc_node_comments::SwcComments;
 use turbo_tasks::{ValueDefault, Vc};
 use turbo_tasks_fs::FileSystemPath;
