@@ -7295,6 +7295,69 @@ dependencies = [
 ]
 
 [[package]]
+name = "swc_css_codegen"
+version = "0.149.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aef989abd4b9ccf3caf6a4ab0ceb9f9e7d6a27c08585a20a7fc7b9db6c73a341"
+dependencies = [
+ "auto_impl",
+ "bitflags 2.3.3",
+ "rustc-hash",
+ "serde",
+ "swc_atoms",
+ "swc_common",
+ "swc_css_ast",
+ "swc_css_codegen_macros",
+ "swc_css_utils",
+]
+
+[[package]]
+name = "swc_css_codegen_macros"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7da287376d8e9ab2e2c5a17fffd0c4701140433a8640ea52fa0c368e69dec565"
+dependencies = [
+ "pmutil",
+ "proc-macro2",
+ "quote",
+ "swc_macros_common",
+ "syn 2.0.25",
+]
+
+[[package]]
+name = "swc_css_compat"
+version = "0.25.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a1ee1b2b77e7daaf389237ca2656df01cf8c1a6f2d9b158459921b202a661f8a"
+dependencies = [
+ "bitflags 2.3.3",
+ "once_cell",
+ "serde",
+ "serde_json",
+ "swc_atoms",
+ "swc_common",
+ "swc_css_ast",
+ "swc_css_utils",
+ "swc_css_visit",
+]
+
+[[package]]
+name = "swc_css_modules"
+version = "0.27.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "da600f86869cd8c6c47c906b92fef7293c4b560db265fd93bc1c8cf5ca8008a8"
+dependencies = [
+ "rustc-hash",
+ "serde",
+ "swc_atoms",
+ "swc_common",
+ "swc_css_ast",
+ "swc_css_codegen",
+ "swc_css_parser",
+ "swc_css_visit",
+]
+
+[[package]]
 name = "swc_css_parser"
 version = "0.148.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7305,6 +7368,21 @@ dependencies = [
  "swc_atoms",
  "swc_common",
  "swc_css_ast",
+]
+
+[[package]]
+name = "swc_css_utils"
+version = "0.136.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3eead47672e3c832e2e3fc3e523490c4822d80a7fc8c50e87a66f9ab7003b517"
+dependencies = [
+ "once_cell",
+ "serde",
+ "serde_json",
+ "swc_atoms",
+ "swc_common",
+ "swc_css_ast",
+ "swc_css_visit",
 ]
 
 [[package]]
@@ -9594,6 +9672,8 @@ dependencies = [
  "serde",
  "swc_atoms",
  "swc_css_ast",
+ "swc_css_compat",
+ "swc_css_modules",
  "swc_css_parser",
  "swc_css_visit",
  "turbo-tasks",
