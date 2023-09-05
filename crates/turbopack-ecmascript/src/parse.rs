@@ -1,8 +1,18 @@
 use std::{future::Future, sync::Arc};
 
 use anyhow::{anyhow, Context, Result};
-use swc_common::Globals;
-use swc_ecma_ast::Program;
+use swc_common::{
+    errors::{Handler, HANDLER},
+    source_map::SourceMapGenConfig,
+    BytePos, FileName, Globals, LineCol, Mark, GLOBALS,
+};
+use swc_ecma_ast::{EsVersion, Program};
+use swc_ecma_parser::{lexer::Lexer, EsConfig, Parser, StringInput, Syntax, TsConfig};
+use swc_ecma_transforms_base::{
+    helpers::{Helpers, HELPERS},
+    resolver,
+};
+use swc_node_comments::SwcComments;
 use turbo_tasks::{util::WrapFuture, Value, ValueToString, Vc};
 use turbo_tasks_fs::{FileContent, FileSystemPath};
 use turbo_tasks_hash::hash_xxh3_hash64;
@@ -318,7 +328,7 @@ async fn parse_content(
                     .await?;
             }
 
-            parsed_program.visit_mut_with(&mut swc_ecma_transforms::base::helpers::inject_helpers(
+            parsed_program.visit_mut_with(&mut swc_ecma_transforms_base::helpers::inject_helpers(
                 unresolved_mark,
             ));
 

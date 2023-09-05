@@ -1,12 +1,8 @@
 use std::borrow::Cow;
 
-use swc_core::{
-    common::pass::AstKindPath,
-    ecma::{
-        ast::*,
-        visit::{AstParentKind, VisitMut, VisitMutAstPath, VisitMutWith, VisitMutWithPath},
-    },
-};
+use swc_common::pass::AstKindPath;
+use swc_ecma_ast::*;
+use swc_ecma_visit::{AstParentKind, VisitMut, VisitMutAstPath, VisitMutWith, VisitMutWithPath};
 
 use crate::code_gen::VisitorFactory;
 
@@ -157,17 +153,7 @@ impl VisitMutAstPath for ApplyVisitors<'_, '_> {
 mod tests {
     use std::sync::Arc;
 
-    use swc_core::{
-        common::{errors::HANDLER, FileName, Mark, SourceFile, SourceMap},
-        ecma::{
-            ast::*,
-            codegen::{text_writer::JsWriter, Emitter},
-            parser::parse_file_as_module,
-            transforms::base::resolver,
-            visit::{fields::*, AstParentKind, VisitMut, VisitMutWith, VisitMutWithPath},
-        },
-        testing::run_test,
-    };
+    use swc_ecma_ast::*;
 
     use super::{ApplyVisitors, VisitorFactory};
 
@@ -214,7 +200,7 @@ mod tests {
     fn to_js(m: &Module, cm: &Arc<SourceMap>) -> String {
         let mut bytes = Vec::new();
         let mut emitter = Emitter {
-            cfg: swc_core::ecma::codegen::Config {
+            cfg: swc_ecma_codegen::Config {
                 minify: true,
                 ..Default::default()
             },

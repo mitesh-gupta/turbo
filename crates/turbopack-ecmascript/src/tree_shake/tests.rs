@@ -260,11 +260,11 @@ impl super::merge::Load for SingleModuleLoader<'_> {
     }
 }
 
-fn print<N: swc_core::ecma::codegen::Node>(cm: &Arc<SourceMap>, nodes: &[&N]) -> String {
+fn print<N: swc_ecma_codegen::Node>(cm: &Arc<SourceMap>, nodes: &[&N]) -> String {
     let mut buf = vec![];
 
     {
-        let mut emitter = swc_core::ecma::codegen::Emitter {
+        let mut emitter = swc_ecma_codegen::Emitter {
             cfg: Default::default(),
             cm: cm.clone(),
             comments: None,
