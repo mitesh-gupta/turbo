@@ -9592,6 +9592,7 @@ dependencies = [
  "once_cell",
  "regex",
  "serde",
+ "swc_atoms",
  "swc_css_ast",
  "swc_css_parser",
  "swc_css_visit",
