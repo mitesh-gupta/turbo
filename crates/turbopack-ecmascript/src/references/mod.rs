@@ -30,15 +30,16 @@ use lazy_static::lazy_static;
 use parking_lot::Mutex;
 use regex::Regex;
 use swc_common::{
-    comments::CommentKind,
+    comments::{CommentKind, Comments},
     errors::{DiagnosticId, Handler, HANDLER},
     pass::AstNodePath,
-    Globals, Span, GLOBALS,
+    source_map::Pos,
+    Globals, Span, Spanned, GLOBALS,
 };
 use swc_ecma_ast::*;
 use swc_ecma_visit::{
     fields::{AssignExprField, ExprField, PatField, PatOrExprField},
-    AstParentKind, AstParentNodeRef, VisitAstPath,
+    AstParentKind, AstParentNodeRef, VisitAstPath, VisitWithPath,
 };
 use turbo_tasks::{TryJoinIterExt, Upcast, Value, Vc};
 use turbo_tasks_fs::{FileJsonContent, FileSystemPath};

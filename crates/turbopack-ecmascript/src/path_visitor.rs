@@ -158,7 +158,7 @@ mod tests {
     use swc_ecma_codegen::{text_writer::JsWriter, Emitter};
     use swc_ecma_parser::parse_file_as_module;
     use swc_ecma_transforms_base::resolver;
-    use swc_ecma_visit::{fields::*, AstParentKind, VisitMut};
+    use swc_ecma_visit::{fields::*, AstParentKind, VisitMut, VisitMutWith, VisitMutWithPath};
     use testing::run_test;
 
     use super::{ApplyVisitors, VisitorFactory};
