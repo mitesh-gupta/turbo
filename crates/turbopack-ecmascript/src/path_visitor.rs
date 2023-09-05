@@ -153,7 +153,13 @@ impl VisitMutAstPath for ApplyVisitors<'_, '_> {
 mod tests {
     use std::sync::Arc;
 
+    use swc_common::{errors::HANDLER, FileName, Mark, SourceFile, SourceMap};
     use swc_ecma_ast::*;
+    use swc_ecma_codegen::{text_writer::JsWriter, Emitter};
+    use swc_ecma_parser::parse_file_as_module;
+    use swc_ecma_transforms_base::resolver;
+    use swc_ecma_visit::{fields::*, AstParentKind, VisitMut};
+    use testing::run_test;
 
     use super::{ApplyVisitors, VisitorFactory};
 

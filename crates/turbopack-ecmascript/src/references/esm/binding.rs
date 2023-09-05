@@ -1,13 +1,6 @@
 use anyhow::Result;
-use swc_core::{
-    common::DUMMY_SP,
-    ecma::{
-        ast::{
-            ComputedPropName, Expr, Ident, KeyValueProp, Lit, MemberExpr, MemberProp, Prop,
-            PropName, Str,
-        },
-        visit::fields::PropField,
-    },
+use swc_ecma_ast::{
+    ComputedPropName, Expr, Ident, KeyValueProp, Lit, MemberExpr, MemberProp, Prop, PropName, Str,
 };
 use turbo_tasks::Vc;
 

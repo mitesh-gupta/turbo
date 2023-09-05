@@ -2,12 +2,8 @@ use std::hash::BuildHasherDefault;
 
 use indexmap::IndexSet;
 use rustc_hash::FxHasher;
-use swc_core::ecma::{
-    ast::{
-        BlockStmtOrExpr, Constructor, Expr, Function, Id, Ident, MemberProp, Pat, PatOrExpr,
-        PropName,
-    },
-    visit::{noop_visit_type, visit_obj_and_computed, Visit, VisitWith},
+use swc_ecma_ast::{
+    BlockStmtOrExpr, Constructor, Expr, Function, Id, Ident, MemberProp, Pat, PatOrExpr, PropName,
 };
 
 #[derive(Debug, Default, Clone, Copy)]
