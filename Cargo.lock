@@ -9833,6 +9833,7 @@ dependencies = [
  "swc_common",
  "swc_core 0.83.0",
  "swc_ecma_ast",
+ "swc_ecma_transforms_base 0.133.0",
  "swc_ecma_utils 0.123.0",
  "swc_ecma_visit",
  "swc_emotion",
