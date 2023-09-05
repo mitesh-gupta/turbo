@@ -1,12 +1,8 @@
 use std::{fmt::Write, iter::once, sync::Arc};
 
 use anyhow::{bail, Result};
-use indexmap::IndexMap;
 use indoc::formatdoc;
-use lightningcss::{
-    css_modules::{CssModuleExport, CssModuleExports},
-    dependencies::Dependency,
-};
+use lightningcss::css_modules::CssModuleExports;
 use swc_core::common::{BytePos, FileName, LineCol, SourceMap};
 use turbo_tasks::{Value, ValueToString, Vc};
 use turbo_tasks_fs::FileSystemPath;
@@ -19,7 +15,7 @@ use turbopack_core::{
     ident::AssetIdent,
     issue::{Issue, IssueExt, IssueSeverity},
     module::Module,
-    reference::{ModuleReference, ModuleReferences},
+    reference::ModuleReferences,
     reference_type::{CssReferenceSubType, ReferenceType},
     resolve::origin::ResolveOrigin,
     source::Source,
@@ -35,7 +31,7 @@ use turbopack_ecmascript::{
 
 use crate::{
     process::{ProcessCss, ProcessCssResult},
-    references::{compose::CssModuleComposeReference, internal::InternalCssAssetReference},
+    references::internal::InternalCssAssetReference,
 };
 
 #[turbo_tasks::function]
