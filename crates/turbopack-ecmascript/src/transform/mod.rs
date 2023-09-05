@@ -2,6 +2,9 @@ use std::{fmt::Debug, hash::Hash, sync::Arc};
 
 use anyhow::Result;
 use async_trait::async_trait;
+use swc_common::{chain, comments::Comments};
+use swc_ecma_ast::{Module, ModuleItem, Program};
+use swc_ecma_transforms_base::{assumptions::Assumptions, helpers::inject_helpers};
 use turbo_tasks::{ValueDefault, Vc};
 use turbo_tasks_fs::FileSystemPath;
 use turbopack_core::{
@@ -126,7 +129,7 @@ impl EcmascriptInputTransform {
                 import_source,
                 runtime,
             } => {
-                use swc_ecma_transforms::react::{Options, Runtime};
+                use swc_ecma_transforms_react::{Options, Runtime};
                 let runtime = if let Some(runtime) = &*runtime.await? {
                     match runtime.as_str() {
                         "classic" => Runtime::Classic,
@@ -214,7 +217,7 @@ impl EcmascriptInputTransform {
                 // Explicit type annotation to ensure that we don't duplicate transforms in the
                 // final binary
                 *program = module_program.fold_with(&mut chain!(
-                    preset_env::preset_env::<&'_ dyn Comments>(
+                    swc_ecma_preset_env::preset_env::<&'_ dyn Comments>(
                         top_level_mark,
                         Some(&comments),
                         config,
