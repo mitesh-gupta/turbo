@@ -3,8 +3,6 @@ use std::{fmt::Debug, hash::Hash, sync::Arc};
 use anyhow::Result;
 use async_trait::async_trait;
 use swc_common::{chain, comments::Comments, util::take::Take, Mark, SourceMap};
-use swc_core::quote;
-use swc_ecma_ast::{Module, ModuleItem, Program, Script};
 use swc_ecma_preset_env::Targets;
 use swc_ecma_transforms_base::{
     assumptions::Assumptions, feature::FeatureFlag, helpers::inject_helpers,
