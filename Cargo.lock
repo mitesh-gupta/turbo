@@ -7030,6 +7030,7 @@ dependencies = [
  "clap 4.1.11",
  "owo-colors",
  "regex",
+ "swc",
  "swc_common",
  "swc_ecma_ast",
  "swc_ecma_parser 0.140.0",
