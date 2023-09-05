@@ -1,6 +1,8 @@
 use anyhow::Result;
 use indexmap::IndexSet;
 use serde::{Deserialize, Serialize};
+use swc_common::DUMMY_SP;
+use swc_core::quote;
 use swc_ecma_ast::{ArrayLit, ArrayPat, Expr, Ident, Pat, Program};
 use turbo_tasks::{primitives::Bools, trace::TraceRawVcs, TryFlatJoinIterExt, Value, Vc};
 use turbopack_core::chunk::availability_info::AvailabilityInfo;

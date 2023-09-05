@@ -5,6 +5,7 @@ use std::{
 
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
+use swc_core::{quote, quote_expr};
 use swc_ecma_ast::{
     self as ast, ComputedPropName, Expr, ExprStmt, Ident, KeyValueProp, Lit, MemberExpr,
     MemberProp, ModuleItem, ObjectLit, Program, Prop, PropName, PropOrSpread, Script, Stmt, Str,
