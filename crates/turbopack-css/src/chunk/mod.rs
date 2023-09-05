@@ -32,7 +32,7 @@ use writer::expand_imports;
 use self::{single_item_chunk::chunk::SingleItemCssChunk, source_map::CssChunkSourceMapAsset};
 use crate::{
     embed::{CssEmbed, CssEmbeddable},
-    parse::ParseCssResultSourceMap,
+    process::ProcessCssResultSourceMap,
     util::stringify_js,
     ImportAssetReference,
 };
@@ -515,7 +515,7 @@ pub enum CssImport {
 pub struct CssChunkItemContent {
     pub inner_code: Rope,
     pub imports: Vec<CssImport>,
-    pub source_map: Option<Vc<ParseCssResultSourceMap>>,
+    pub source_map: Option<Vc<ProcessCssResultSourceMap>>,
 }
 
 #[turbo_tasks::value_trait]
