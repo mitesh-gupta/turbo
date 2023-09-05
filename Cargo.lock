@@ -7030,7 +7030,9 @@ dependencies = [
  "clap 4.1.11",
  "owo-colors",
  "regex",
- "swc_core 0.83.0",
+ "swc_common",
+ "swc_ecma_ast",
+ "swc_ecma_parser 0.140.0",
 ]
 
 [[package]]
@@ -9333,7 +9335,6 @@ dependencies = [
  "serde_json",
  "serde_qs",
  "sourcemap",
- "swc_core 0.83.0",
  "turbo-tasks",
  "turbo-tasks-build",
  "turbo-tasks-fs",
@@ -9498,7 +9499,6 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_qs",
- "swc_core 0.83.0",
  "tracing",
  "turbo-tasks",
  "turbo-tasks-build",
@@ -9638,7 +9638,6 @@ dependencies = [
  "anyhow",
  "indoc",
  "serde",
- "swc_core 0.83.0",
  "turbo-tasks",
  "turbo-tasks-build",
  "turbo-tasks-fs",
@@ -9762,7 +9761,6 @@ dependencies = [
 name = "turbopack-swc-utils"
 version = "0.1.0"
 dependencies = [
- "swc_core 0.83.0",
  "turbo-tasks",
  "turbo-tasks-build",
  "turbopack-core",
