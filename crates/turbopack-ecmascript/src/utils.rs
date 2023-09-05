@@ -1,4 +1,5 @@
 use serde::Serialize;
+use swc_common::DUMMY_SP;
 use swc_ecma_ast::{Expr, Lit, Str};
 use turbopack_core::{chunk::ModuleId, resolve::pattern::Pattern};
 

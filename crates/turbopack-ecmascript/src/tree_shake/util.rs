@@ -5,6 +5,7 @@ use rustc_hash::FxHasher;
 use swc_ecma_ast::{
     BlockStmtOrExpr, Constructor, Expr, Function, Id, Ident, MemberProp, Pat, PatOrExpr, PropName,
 };
+use swc_ecma_visit::{noop_visit_type, visit_obj_and_computed, Visit, VisitWith};
 
 #[derive(Debug, Default, Clone, Copy)]
 enum Mode {
