@@ -1,24 +1,19 @@
 use std::{io::Write, sync::Arc};
 
 use anyhow::{bail, Context, Result};
-use swc_core::{
-    base::{try_with_handler, Compiler},
-    common::{
-        comments::{Comments, SingleThreadedComments},
-        BytePos, FileName, FilePathMapping, LineCol, Mark, SourceMap as SwcSourceMap, GLOBALS,
-    },
-    ecma::{
-        self,
-        ast::{EsVersion, Program},
-        codegen::{
-            text_writer::{self, JsWriter, WriteJs},
-            Emitter, Node,
-        },
-        minifier::option::{ExtraOptions, MinifyOptions},
-        parser::{lexer::Lexer, Parser, StringInput, Syntax},
-        visit::FoldWith,
-    },
+use swc::{try_with_handler, Compiler};
+use swc_common::{
+    comments::{Comments, SingleThreadedComments},
+    BytePos, FileName, FilePathMapping, LineCol, Mark, SourceMap as SwcSourceMap, GLOBALS,
 };
+use swc_ecma_ast::{EsVersion, Program};
+use swc_ecma_codegen::{
+    text_writer::{self, JsWriter, WriteJs},
+    Emitter, Node,
+};
+use swc_ecma_minifier::option::{ExtraOptions, MinifyOptions};
+use swc_ecma_parser::{lexer::Lexer, Parser, StringInput, Syntax};
+use swc_ecma_visit::FoldWith;
 use turbo_tasks::Vc;
 use turbo_tasks_fs::FileSystemPath;
 use turbopack_core::{
@@ -77,14 +72,13 @@ async fn perform_minify(path: Vc<FileSystemPath>, code_vc: Vc<Code>) -> Result<V
             let top_level_mark = Mark::new();
 
             Ok(compiler.run_transform(handler, false, || {
-                let mut program =
-                    program.fold_with(&mut swc_core::ecma::transforms::base::resolver(
-                        unresolved_mark,
-                        top_level_mark,
-                        false,
-                    ));
+                let mut program = program.fold_with(&mut swc_ecma_transforms_base::resolver(
+                    unresolved_mark,
+                    top_level_mark,
+                    false,
+                ));
 
-                program = swc_core::ecma::minifier::optimize(
+                program = swc_ecma_minifier::optimize(
                     program,
                     cm.clone(),
                     Some(&comments),
@@ -100,7 +94,7 @@ async fn perform_minify(path: Vc<FileSystemPath>, code_vc: Vc<Code>) -> Result<V
                     },
                 );
 
-                program.fold_with(&mut ecma::transforms::base::fixer::fixer(Some(
+                program.fold_with(&mut swc_ecma_transforms_base::fixer::fixer(Some(
                     &comments as &dyn Comments,
                 )))
             }))
@@ -138,10 +132,7 @@ fn print_program(
             )))) as Box<dyn WriteJs>;
 
             let mut emitter = Emitter {
-                cfg: swc_core::ecma::codegen::Config {
-                    minify: true,
-                    ..Default::default()
-                },
+                cfg: swc_ecma_codegen::Config::default().with_minify(true),
                 comments: None,
                 cm: cm.clone(),
                 wr,
