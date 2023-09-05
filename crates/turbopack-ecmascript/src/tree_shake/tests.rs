@@ -9,6 +9,10 @@ use anyhow::Error;
 use indexmap::IndexSet;
 use rustc_hash::FxHasher;
 use serde::Deserialize;
+use swc_atoms::JsWord;
+use swc_ecma_ast::{EsVersion, Id, Module};
+use swc_ecma_parser::parse_file_as_module;
+use testing::{fixture, NormalizedOutput};
 
 use super::{
     graph::{
