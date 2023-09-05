@@ -2,6 +2,7 @@ use std::{collections::VecDeque, sync::Arc};
 
 use anyhow::{bail, Result};
 use indexmap::IndexMap;
+use swc_core::{quote, quote_expr};
 use swc_ecma_ast::{
     Expr, ExprStmt, KeyValueProp, Lit, ModuleItem, ObjectLit, Prop, PropName, PropOrSpread, Stmt,
     {self as ast},

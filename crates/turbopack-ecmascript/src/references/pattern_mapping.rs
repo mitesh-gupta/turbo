@@ -1,5 +1,6 @@
 use anyhow::Result;
 use indexmap::IndexMap;
+use swc_core::quote;
 use turbo_tasks::{debug::ValueDebug, Value, Vc};
 use turbopack_core::{
     chunk::{
