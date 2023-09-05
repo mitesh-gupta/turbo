@@ -9526,6 +9526,7 @@ dependencies = [
  "serde_json",
  "serde_qs",
  "sourcemap",
+ "swc",
  "swc_atoms",
  "swc_common",
  "swc_ecma_ast",
