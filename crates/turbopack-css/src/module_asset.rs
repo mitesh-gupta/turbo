@@ -144,7 +144,7 @@ impl ModuleCssAsset {
             }
         }
 
-        Ok(Vc::cell(CssModuleExports::default()))
+        Ok(ModuleReferences::empty())
     }
 }
 
