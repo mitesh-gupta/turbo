@@ -3,6 +3,8 @@ use std::{fmt::Write, iter::once, sync::Arc};
 use anyhow::{bail, Result};
 use indexmap::IndexMap;
 use indoc::formatdoc;
+use swc_common::{BytePos, FileName, LineCol, SourceMap};
+use swc_css_modules::CssClassName;
 use turbo_tasks::{Value, ValueToString, Vc};
 use turbo_tasks_fs::FileSystemPath;
 use turbopack_core::{
