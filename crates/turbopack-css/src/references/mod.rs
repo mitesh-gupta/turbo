@@ -2,7 +2,7 @@ use anyhow::Result;
 use swc_common::{
     errors::{Handler, HANDLER},
     source_map::Pos,
-    Globals, GLOBALS,
+    Globals, Spanned, GLOBALS,
 };
 use swc_css_ast::{ImportHref, ImportPrelude, Url, UrlValue};
 use swc_css_visit::{AstNodePath, AstParentKind, VisitAstPath, VisitWithPath};
