@@ -40,6 +40,7 @@ pub use references::{AnalyzeEcmascriptModuleResult, TURBOPACK_HELPER};
 pub use static_code::StaticEcmascriptCode;
 use swc_common::GLOBALS;
 use swc_ecma_codegen::{text_writer::JsWriter, Emitter};
+use swc_ecma_visit::{VisitMutWith, VisitMutWithPath};
 pub use transform::{
     CustomTransformer, EcmascriptInputTransform, EcmascriptInputTransforms, OptionTransformPlugin,
     TransformContext, TransformPlugin, UnsupportedServerActionIssue,
@@ -641,9 +642,7 @@ async fn gen_content_with_visitors(
         let comments = comments.consumable();
 
         let mut emitter = Emitter {
-            cfg: swc_ecma_codegen::Config {
-                ..Default::default()
-            },
+            cfg: swc_ecma_codegen::Config::default(),
             cm: source_map.clone(),
             comments: Some(&comments),
             wr: JsWriter::new(source_map.clone(), "\n", &mut bytes, Some(&mut srcmap)),
