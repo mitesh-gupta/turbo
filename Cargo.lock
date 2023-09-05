@@ -7174,7 +7174,7 @@ dependencies = [
  "swc_ecma_quote_macros",
  "swc_ecma_transforms_base 0.132.4",
  "swc_ecma_transforms_optimization",
- "swc_ecma_transforms_react",
+ "swc_ecma_transforms_react 0.178.6",
  "swc_ecma_transforms_testing",
  "swc_ecma_transforms_typescript",
  "swc_ecma_utils 0.122.1",
@@ -7482,7 +7482,7 @@ dependencies = [
  "swc_ecma_transforms_module",
  "swc_ecma_transforms_optimization",
  "swc_ecma_transforms_proposal 0.166.5",
- "swc_ecma_transforms_react",
+ "swc_ecma_transforms_react 0.178.6",
  "swc_ecma_transforms_typescript",
  "swc_ecma_utils 0.122.1",
  "swc_ecma_visit",
@@ -7761,6 +7761,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "swc_ecma_transforms_react"
+version = "0.179.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "59b9c4a068b55238df8bd70730651d45b39d5c924fc4bf4ccbb912e48b406eac"
+dependencies = [
+ "base64 0.13.1",
+ "dashmap",
+ "indexmap 1.9.3",
+ "once_cell",
+ "serde",
+ "sha-1",
+ "string_enum",
+ "swc_atoms",
+ "swc_common",
+ "swc_config",
+ "swc_ecma_ast",
+ "swc_ecma_parser 0.140.0",
+ "swc_ecma_transforms_base 0.133.0",
+ "swc_ecma_transforms_macros",
+ "swc_ecma_utils 0.123.0",
+ "swc_ecma_visit",
+]
+
+[[package]]
 name = "swc_ecma_transforms_testing"
 version = "0.135.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7797,7 +7821,7 @@ dependencies = [
  "swc_common",
  "swc_ecma_ast",
  "swc_ecma_transforms_base 0.132.4",
- "swc_ecma_transforms_react",
+ "swc_ecma_transforms_react 0.178.6",
  "swc_ecma_utils 0.122.1",
  "swc_ecma_visit",
 ]
@@ -9584,6 +9608,7 @@ dependencies = [
  "swc_ecma_parser 0.140.0",
  "swc_ecma_preset_env 0.201.0",
  "swc_ecma_transforms_base 0.133.0",
+ "swc_ecma_transforms_react 0.179.0",
  "swc_ecma_utils 0.123.0",
  "swc_ecma_visit",
  "swc_node_comments",
