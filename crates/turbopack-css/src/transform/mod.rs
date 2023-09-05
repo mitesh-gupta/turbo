@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use anyhow::Result;
+use turbopack_core::source_map::SourceMap;
 
 #[turbo_tasks::value(serialization = "auto_for_input")]
 #[derive(PartialOrd, Ord, Hash, Debug, Copy, Clone)]
