@@ -1,5 +1,10 @@
 use anyhow::Result;
+use swc_common::DUMMY_SP;
 use swc_css_ast::*;
+use swc_css_codegen::{
+    writer::basic::{BasicCssWriter, BasicCssWriterConfig},
+    CodeGenerator,
+};
 use turbo_tasks::{Value, ValueToString, Vc};
 use turbopack_core::{
     chunk::{ChunkableModuleReference, ChunkingContext},
