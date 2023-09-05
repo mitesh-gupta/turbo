@@ -9762,6 +9762,7 @@ dependencies = [
 name = "turbopack-swc-utils"
 version = "0.1.0"
 dependencies = [
+ "swc_common",
  "turbo-tasks",
  "turbo-tasks-build",
  "turbopack-core",
