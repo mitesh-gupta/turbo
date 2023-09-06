@@ -17,7 +17,7 @@ use turbopack_core::{
 use crate::{
     chunk::{CssChunk, CssChunkItem, CssChunkItemContent, CssChunkPlaceable, CssImport},
     code_gen::CodeGenerateable,
-    process::{finalize_css, process_css, FinalCssResult, ProcessCss, ProcessCssResult},
+    process::{finalize_css, parse_css, FinalCssResult, ProcessCss, ProcessCssResult},
     references::{compose::CssModuleComposeReference, import::ImportAssetReference},
     CssModuleAssetType,
 };
@@ -61,9 +61,9 @@ impl CssModuleAsset {
 #[turbo_tasks::value_impl]
 impl ProcessCss for CssModuleAsset {
     #[turbo_tasks::function]
-    async fn process_css(self: Vc<Self>) -> Result<Vc<ProcessCssResult>> {
+    async fn parse_css(self: Vc<Self>) -> Result<Vc<ProcessCssResult>> {
         let this = self.await?;
-        Ok(process_css(this.source, Vc::upcast(self), this.ty))
+        Ok(parse_css(this.source, Vc::upcast(self), this.ty))
     }
 
     #[turbo_tasks::function]
@@ -71,7 +71,7 @@ impl ProcessCss for CssModuleAsset {
         self: Vc<Self>,
         chunking_context: Vc<Box<dyn ChunkingContext>>,
     ) -> Result<Vc<FinalCssResult>> {
-        let parse_result = self.process_css();
+        let parse_result = self.parse_css();
 
         Ok(finalize_css(parse_result, chunking_context))
     }
@@ -86,7 +86,7 @@ impl Module for CssModuleAsset {
 
     #[turbo_tasks::function]
     async fn references(self: Vc<Self>) -> Result<Vc<ModuleReferences>> {
-        let result = self.process_css().await?;
+        let result = self.parse_css().await?;
         // TODO: include CSS source map
 
         match &*result {
