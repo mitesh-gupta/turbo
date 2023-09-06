@@ -31,7 +31,7 @@ use turbopack_ecmascript::{
 };
 
 use crate::{
-    process::{FinalCssResult, ProcessCss, ProcessCssResult},
+    process::{FinalCssResult, ParseCssResult, ProcessCss},
     references::{compose::CssModuleComposeReference, internal::InternalCssAssetReference},
 };
 
