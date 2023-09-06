@@ -31,7 +31,7 @@ use turbopack_ecmascript::{
 };
 
 use crate::{
-    process::{ProcessCss, ProcessCssResult},
+    process::{FinalCssResult, ProcessCss, ProcessCssResult},
     references::{compose::CssModuleComposeReference, internal::InternalCssAssetReference},
 };
 
@@ -158,7 +158,7 @@ impl ModuleCssAsset {
         let mut classes = IndexMap::default();
 
         // TODO(alexkirsz) Should we report an error on parse error here?
-        if let ProcessCssResult::Ok {
+        if let FinalCssResult::Ok {
             exports: Some(exports),
             ..
         } = &*result
