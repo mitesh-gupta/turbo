@@ -26,22 +26,22 @@ const GLOBAL_CACHE_KEY: &str = "You don't understand! I coulda had class. I coul
 enum GlobalHashError {}
 
 #[derive(Debug, Default)]
-pub struct GlobalHashableInputs {
-    global_cache_key: &'static str,
-    global_file_hash_map: HashMap<RelativeUnixPathBuf, String>,
-    root_external_dependencies_hash: String,
-    env: Vec<String>,
+pub struct GlobalHashableInputs<'a> {
+    pub global_cache_key: &'static str,
+    pub global_file_hash_map: HashMap<RelativeUnixPathBuf, String>,
+    pub root_external_dependencies_hash: &'a str,
+    pub env: Vec<String>,
     // Only Option to allow #[derive(Default)]
-    resolved_env_vars: Option<DetailedMap>,
-    pass_through_env: Vec<String>,
-    env_mode: EnvMode,
-    framework_inference: bool,
-    dot_env: Vec<RelativeUnixPathBuf>,
+    pub resolved_env_vars: Option<DetailedMap>,
+    pub pass_through_env: Vec<String>,
+    pub env_mode: EnvMode,
+    pub framework_inference: bool,
+    pub dot_env: Vec<RelativeUnixPathBuf>,
 }
 
 #[allow(clippy::too_many_arguments)]
-pub fn get_global_hash_inputs<L: ?Sized + Lockfile>(
-    root_workspace: &WorkspaceInfo,
+pub fn get_global_hash_inputs<'a, L: ?Sized + Lockfile>(
+    root_external_dependencies_hash: &'a str,
     root_path: &AbsoluteSystemPath,
     package_manager: &PackageManager,
     lockfile: Option<&L>,
@@ -52,7 +52,7 @@ pub fn get_global_hash_inputs<L: ?Sized + Lockfile>(
     env_mode: EnvMode,
     framework_inference: bool,
     dot_env: Vec<RelativeUnixPathBuf>,
-) -> Result<GlobalHashableInputs> {
+) -> Result<GlobalHashableInputs<'a>> {
     let global_hashable_env_vars =
         get_global_hashable_env_vars(env_at_execution_start, &global_env)?;
 
@@ -102,8 +102,6 @@ pub fn get_global_hash_inputs<L: ?Sized + Lockfile>(
         global_file_hash_map.extend(dot_env_object);
     }
 
-    let root_external_dependencies_hash = root_workspace.get_external_deps_hash();
-
     debug!(
         "rust external deps hash: {}",
         root_external_dependencies_hash
@@ -122,8 +120,8 @@ pub fn get_global_hash_inputs<L: ?Sized + Lockfile>(
     })
 }
 
-impl GlobalHashableInputs {
-    pub fn calculate_global_hash_from_inputs(mut self) -> String {
+impl<'a> GlobalHashableInputs<'a> {
+    pub fn calculate_global_hash_from_inputs(&mut self) -> String {
         match self.env_mode {
             EnvMode::Infer if !self.pass_through_env.is_empty() => {
                 self.env_mode = EnvMode::Strict;
@@ -137,20 +135,21 @@ impl GlobalHashableInputs {
         self.calculate_global_hash()
     }
 
-    fn calculate_global_hash(self) -> String {
+    fn calculate_global_hash(&self) -> String {
         let global_hashable = GlobalHashable {
             global_cache_key: self.global_cache_key,
-            global_file_hash_map: self.global_file_hash_map,
-            root_external_dependencies_hash: self.root_external_dependencies_hash,
-            env: self.env,
+            global_file_hash_map: &self.global_file_hash_map,
+            root_external_dependencies_hash: &self.root_external_dependencies_hash,
+            env: &self.env,
             resolved_env_vars: self
                 .resolved_env_vars
+                .as_ref()
                 .map(|evm| evm.all.to_hashable())
                 .unwrap_or_default(),
-            pass_through_env: self.pass_through_env,
+            pass_through_env: &self.pass_through_env,
             env_mode: self.env_mode,
             framework_inference: self.framework_inference,
-            dot_env: self.dot_env,
+            dot_env: &self.dot_env,
         };
 
         global_hashable.hash()
