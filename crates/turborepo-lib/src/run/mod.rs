@@ -12,7 +12,7 @@ use std::{
 
 use anyhow::{anyhow, Context as ErrorContext, Result};
 pub use cache::{RunCache, TaskCache};
-use chrono::{DateTime, Local};
+use chrono::Local;
 use itertools::Itertools;
 use tracing::{debug, info};
 use turbopath::AbsoluteSystemPathBuf;
@@ -34,7 +34,7 @@ use crate::{
     package_json::PackageJson,
     run::{
         global_hash::get_global_hash_inputs,
-        summary::{GlobalHashSummary, Meta},
+        summary::{GlobalHashSummary, RunSummary},
     },
     task_graph::Visitor,
 };
@@ -241,8 +241,6 @@ impl Run {
         let visitor = Visitor::new(pkg_dep_graph.clone(), runcache, &opts);
         visitor.visit(engine).await?;
 
-        println!("done");
-
         let resolved_pass_through_env_vars =
             env_at_execution_start.from_wildcards(&global_hash_inputs.pass_through_env)?;
 
@@ -257,7 +255,7 @@ impl Run {
             resolved_pass_through_env_vars,
         );
 
-        let mut run_summary = Meta::new_run_summary(
+        let mut run_summary = RunSummary::new(
             start_at,
             &self.base.repo_root,
             opts.scope_opts.pkg_inference_root.as_deref(),
